@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-11">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title" style="padding-bottom: 0;">
+                    <h3 class="text-center">周报编辑</h3>
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#basic_info" data-toggle="tab">周报</a></li>
+                        <!--<li><a href="#file_upload" data-toggle="tab">附件上传</a></li>-->
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div class="ibox-content tab-pane fade in active" id="basic_info">
+                        <form class="form-inline m-t" id="signupForm">
+                            <div class="form-group customDiv">
+                                <label class="col-sm-3 control-label customLa">周报主題：</label>
+                                <div class="col-sm-8">
+                                    <input id="title" name="title" class=" customSiIn" type="text" th:value="${weekReport.title}">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group customDiv">
+                                <label class="col-sm-3 control-label customLa">周报内容：</label>
+                                <div class="col-sm-8">
+                                    <!--<input id="content" name="content" class="form-control" type="text">-->
+                                    <textarea id="content" name="content" class="customTarea" th:text="${weekReport.content}"></textarea>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group customDiv">
+                                <label class="col-sm-3 control-label customLa">下周计划：</label>
+                                <div class="col-sm-8">
+                                    <!--<input id="content" name="content" class="form-control" type="text">-->
+                                    <textarea id="nextContent" name="nextContent" class="customTarea" th:text="${weekReport.nextContent}"></textarea>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group customDiv">
+                                <label class="col-sm-3 customLa">创建者：</label>
+                                <div class="col-sm-8">
+                                    <input id="authorName" name="authorName" class="form-control customIn" type="text"
+                                           readonly="readonly" th:value="${weekReport.authorName}">
+                                    <input id="authorId" name="authorId" type="hidden" th:value="${weekReport.authorId}">
+                                </div>
+                            </div>
+                            <div class="form-group customDiv">
+                                <label class="col-sm-3 control-label customLa">创建时间：</label>
+                                <div class="col-sm-8">
+                                    <input id="rCreateDate" name="rCreateDate" class="form-control customIn" type="date"
+                                           readonly="readonly" th:value="${createDate}">
+                                    <!--&lt;!&ndash;隐藏时间值&ndash;&gt;-->
+                                    <!--<input id="rCreateDate1" type="hidden" >-->
+                                    <!--文件上传隐藏url-->
+                                    <input type="hidden" id="fileHiddenUrl" name="fileHiddenUrl">
+                                    <!--表单隐藏ID-->
+                                    <input type="hidden" id="rId" name="id" th:value="${weekReport.id}">
+                                </div>
+                            </div>
+                            <div class="form-group customDiv">
+                                <div class="col-sm-8 customBtn">
+                                    <button type="submit" class="btn btn-primary">提交</button>
+                                    <button id="close" type="button" class="btn btn-primary" onclick="closeWin();">关闭</button>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="ibox-content tab-pane fade gg" id="file_upload">
+                        <div class="ggcontainer" id="crop-avatar">
+                            <!--<form class="avatar-form" action="/sys/user/uploadImg" enctype="multipart/form-data" method="post">-->
+                            <div class="row form-group">
+                                <label class="col-sm-4">文件：</label>
+                                <div class="col-sm-12">
+                                    <input id="fileInput" name="fileInput" type="file" multiple="multiple">
+                                </div>
+                            </div>
+                            <!--</form>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/bio/weekReport/edit.js" th:src="@{/js/appjs/bio/weekReport/edit.js}">
+</script>
+<link rel="stylesheet" href="/css/fileinput.css"  th:href="@{/css/fileinput.css}"/>
+<script src="/js/fileinput.js" th:src="@{/js/fileinput.js}"></script>
+<script src="/js/zh.js" th:src="@{/js/zh.js}"></script>
+<script type="text/javascript" src="/js/formCustom.js" th:src="@{/js/formCustom.js}"></script>
+
+<!--<script th:inline="javascript">-->
+    <!--var prefix = document.getElementsByTagName('meta')['ctx'].content + "/bio/weekReport"-->
+
+    <!--/*<![CDATA[*/-->
+    <!--$(document)-->
+        <!--.ready(-->
+            <!--function () {-->
+
+                <!--//使用最近周报-->
+                <!--$('#usepreviousweek').on('click', function (e) {-->
+                    <!--var markupStr = $("#summernote").val();-->
+
+                    <!--$.ajax({-->
+                        <!--url: prefix + "/latest/" + $("#id").val(),-->
+                        <!--type: "get",-->
+                        <!--success: function (r) {-->
+                            <!--if (r.code == 0) {-->
+                                <!--$('#summernote').summernote('code', markupStr + r.data.content);-->
+                                <!--layer.msg("获取到周报内容，并初始化成功！");-->
+                            <!--} else {-->
+                                <!--layer.msg("没有获取到对应的历史周报信息！");-->
+                            <!--}-->
+                        <!--}-->
+                    <!--});-->
+
+
+                <!--});-->
+
+
+                <!--//使用默认模板-->
+                <!--$('#usedefaulttemplate').on('click', function (e) {-->
+                    <!--var markupStr = $("#summernote").val();-->
+                    <!--$('#summernote').summernote('code', markupStr + '<p style=""><span style="color: inherit; font-family: inherit; font-size: 14px;">本周工作总结：</span></p><ol><li><br></li><li>【如有更多项，请点击 Tab 键后按 Enter 】</li></ol><span style="font-size: 14px;">下周工作计划：</span><ol><li>&nbsp; &nbsp;&nbsp;</li><li>【如有更多项，请点击 Tab 键后按 Enter 】 &nbsp;</li></ol><span style="font-size: 14px;">存在问题：</span><span style="font-weight: normal; font-size: 14px;">【如无，请直接删除此项！】</span><ol><li>&nbsp; &nbsp;&nbsp;</li><li>【如有更多项，请点击 Tab 键后按 Enter】 &nbsp;</li></ol>');-->
+                <!--});-->
+
+                <!--$('#summernote')-->
+                    <!--.summernote(-->
+                        <!--{-->
+                            <!--placeholder: [[${dynamicPlaceholder}]],-->
+                            <!--tabsize: 2,-->
+                            <!--height: 200, //高度，根據需要去設-->
+                            <!--lang: 'zh-CN', //zh-CN爲中文文件，如果需要轉換語言，注意在下載的lang文件夾中取出並加載-->
+                            <!--focus: true,-->
+                            <!--toolbar: [-->
+                                <!--[-->
+                                    <!--'style',-->
+                                    <!--[-->
+                                        <!--'bold',-->
+                                        <!--'italic',-->
+                                        <!--'underline',-->
+                                        <!--'clear']],-->
+                                <!--['fontsize',-->
+                                    <!--['fontsize']],-->
+                                <!--['color', ['color']],-->
+                                <!--[-->
+                                    <!--'para',-->
+                                    <!--['ul', 'ol',-->
+                                        <!--'paragraph']],-->
+
+                                <!--['insert', ['link']],-->
+                                <!--[-->
+                                    <!--'view',-->
+                                    <!--[-->
+                                        <!--'fullscreen',-->
+                                        <!--'codeview',-->
+                                        <!--'help']]]-->
+                        <!--});-->
+
+                <!--$('#summernote').summernote('code', [[${weekReport.content}]]);-->
+
+            <!--});-->
+    <!--/*]]>*/-->
+<!--</script>-->
+
+</body>
+</html>

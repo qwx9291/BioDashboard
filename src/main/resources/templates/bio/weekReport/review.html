@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:shiro="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-11">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title" style="padding-bottom: 0;">
+                    <h3 class="text-center">周报查看</h3>
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#basic_info" data-toggle="tab">周报</a></li>
+                        <!--<li><a href="#file_upload" data-toggle="tab">附件上传</a></li>-->
+                        <li><a href="#file_comment" data-toggle="tab">评论</a></li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div class="ibox-content tab-pane fade in active" id="basic_info">
+                        <form class="form-inline m-t" id="signupForm">
+                            <div class="form-group customDiv">
+                                <label class="col-sm-3 control-label customLa">周报主題：</label>
+                                <div class="col-sm-8">
+                                    <!--<input id="title" name="title" class=" customSiIn" type="text" th:value="${weekReport.title}" disabled="disabled">-->
+                                    <span th:text="${weekReport.title}" class="col-sm-3 control-label customLa"></span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group customDiv">
+                                <label class="col-sm-3 control-label customLa">周报内容：</label>
+                                <div class="col-sm-8">
+                                    <!--<input id="content" name="content" class="form-control" type="text">-->
+                                    <textarea id="content" name="content" class="customTarea" th:text="${weekReport.content}" disabled="disabled"></textarea>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group customDiv">
+                                <label class="col-sm-3 control-label customLa">下周计划：</label>
+                                <div class="col-sm-8">
+                                    <!--<input id="content" name="content" class="form-control" type="text">-->
+                                    <textarea id="nextContent" name="nextContent" class="customTarea" th:text="${weekReport.nextContent}" disabled="disabled"></textarea>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group customDiv">
+                                <label class="col-sm-3 customLa">创建者：</label>
+                                <div class="col-sm-8">
+                                    <!--<input id="authorName" name="authorName" class="form-control customIn" type="text"-->
+                                           <!--disabled="disabled" th:value="${weekReport.authorName}">-->
+                                    <span th:text="${weekReport.authorName}" class="col-sm-3 control-label customLa"></span>
+                                    <!--<input id="authorId" name="authorId" type="hidden" th:value="${weekReport.authorId}">-->
+                                </div>
+                            </div>
+                            <div class="form-group customDiv">
+                                <label class="col-sm-3 control-label customLa">创建时间：</label>
+                                <!--<div class="col-sm-8">-->
+                                    <!--<input id="rCreateDate" name="rCreateDate" class="form-control customIn" type="date"-->
+                                           <!--disabled="disabled" th:value="${weekReport.rCreateDate}">-->
+                                    <span th:text="${createDate}" class="col-sm-3 control-label customLa"></span>
+                                    <!--&lt;!&ndash;文件上传隐藏url&ndash;&gt;-->
+                                    <!--<input type="hidden" id="fileHiddenUrl" name="fileHiddenUrl">-->
+                                    <!--&lt;!&ndash;表单隐藏ID&ndash;&gt;-->
+                                    <!--<input type="hidden" id="rId" name="rId" th:value="${weekReport.id}">-->
+                                <!--</div>-->
+                            </div>
+                        </form>
+                    </div>
+                    <div class="ibox-content tab-pane fade gg" id="file_upload">
+                        <div class="ggcontainer" id="crop-avatar">
+                            <!--<form class="avatar-form" action="/sys/user/uploadImg" enctype="multipart/form-data" method="post">-->
+                            <div class="row form-group">
+                                <label class="col-sm-4">文件：</label>
+                                <div class="col-sm-12">
+                                    <input id="fileInput" name="fileInput" type="file" multiple="multiple">
+                                </div>
+                            </div>
+                            <!--</form>-->
+                        </div>
+                    </div>
+                    <div class="ibox-content tab-pane fade gg" id="file_comment">
+                        <form id="formComment" class="form-inline m-t">
+                            <!--<div class="ggcontainer" id="crop-avatar1">-->
+                                <!--<div class="row form-group">-->
+                                    <!--<label class="col-sm-3 control-label customLa">评论：</label>-->
+                                        <!--<div class="col-sm-8">-->
+                                            <!--<textarea id="comment" name="comment" class="customTarea" style="width: 115%" th:text="${weekReport.comment}"></textarea>-->
+                                        <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <label class="col-sm-3 control-label customLa">评论：</label>
+                            <div class="col-sm-8">
+                                <textarea  id="comment" name="comment" class="customTarea" th:text="${weekReport.comment}" th:if="${not hidden}"></textarea>
+                                <textarea  name="comment" class="customTarea" th:text="${weekReport.comment}" disabled="disabled" th:if="${hidden}"></textarea>
+                            </div>
+                            <div class="form-group customDiv">
+                                <label class="col-sm-3 customLa">评论者：</label>
+                                <div class="col-sm-8">
+                                    <input id="commentName" name="commentName" class="form-control customIn" type="text"
+                                           readonly="readonly" th:value="${comName}">
+                                    <input id="commentatorId" name="commentatorId" type="hidden" th:value="${comId}">
+                                </div>
+                            </div>
+                            <div class="form-group customDiv">
+                                <label class="col-sm-3 control-label customLa">评论时间：</label>
+                                <div class="col-sm-8">
+                                    <input id="commentDate" name="commentDate" class="form-control customIn" type="date"
+                                           readonly="readonly" th:value="${comDate}">
+                                    <!--表单隐藏ID-->
+                                    <input type="hidden" id="rId" name="id" th:value="${weekReport.id}">
+                                </div>
+                            </div>
+                            <div class="form-group customDiv">
+                                <div class="col-sm-8 customBtn">
+                                    <button shiro:hasPermission="common:comment:edit" type="submit" class="btn btn-primary" onclick="update();">提交</button>
+                                    <button id="close" type="button" class="btn btn-primary" onclick="closeWin();">关闭</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/bio/weekReport/edit.js" th:src="@{/js/appjs/bio/weekReport/review.js}">
+</script>
+<link rel="stylesheet" href="/css/fileinput.css"  th:href="@{/css/fileinput.css}"/>
+<script src="/js/fileinput.js" th:src="@{/js/fileinput.js}"></script>
+<script src="/js/zh.js" th:src="@{/js/zh.js}"></script>
+</body>
+</html>

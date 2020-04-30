@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bio.oss.dao.FileDao">
+    <select id="getFilesByFId"
+            resultType="com.bio.oss.domain.FileDO">
+		SELECT
+		*
+		FROM
+		sys_file
+		WHERE
+		f_id = #{fId}
+	</select>
+
+	<delete id="removeByFId" parameterType="String">
+        DELETE FROM sys_file WHERE f_id=#{fId}
+    </delete>
+	<delete id="removeByFIds" parameterType="List">
+        DELETE FROM sys_file WHERE f_id in
+        <foreach collection="list" index="index" item="fId" separator="," open="(" close=")">
+			#{fId}
+		</foreach>
+    </delete>
+</mapper>
